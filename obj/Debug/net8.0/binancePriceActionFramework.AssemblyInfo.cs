@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("binancePriceActionFramework")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c18cf427e71bea4bbe2e35a22e26445e052fa1a1")]
 [assembly: System.Reflection.AssemblyProductAttribute("binancePriceActionFramework")]
 [assembly: System.Reflection.AssemblyTitleAttribute("binancePriceActionFramework")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
