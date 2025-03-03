@@ -1,0 +1,12 @@
+bin/
+obj/
+
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+*.log
+*.lock
+*.tmp
+*.temp
