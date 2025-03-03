@@ -192,7 +192,6 @@ namespace Project.service.impl
                         decimal avgPrice = (minPrice + maxPrice) / 2;
                         bool updateExisting = false;
                         
-                        // Seviyenin daha önce tespit edilip edilmediğini kontrol et
                         decimal roundedLevel = Math.Round(zigZag.GetY(0), 4);
                         
                         if (!_detectedBuysideLevels.Contains(roundedLevel))
@@ -226,7 +225,6 @@ namespace Project.service.impl
                                     IsActive = true
                                 });
                                 
-                                // Tespit edilen seviyeyi kaydet
                                 _detectedBuysideLevels.Add(roundedLevel);
                                 
                                 if (buysideLiquidity.Count > VISIBLE_LEVELS)
@@ -291,7 +289,6 @@ namespace Project.service.impl
                         decimal avgPrice = (minPrice + maxPrice) / 2;
                         bool updateExisting = false;
                         
-                        // Seviyenin daha önce tespit edilip edilmediğini kontrol et
                         decimal roundedLevel = Math.Round(zigZag.GetY(0), 4);
                         
                         if (!_detectedSellsideLevels.Contains(roundedLevel))
@@ -325,7 +322,6 @@ namespace Project.service.impl
                                     IsActive = true
                                 });
                                 
-                                // Tespit edilen seviyeyi kaydet
                                 _detectedSellsideLevels.Add(roundedLevel);
                                 
                                 if (sellsideLiquidity.Count > VISIBLE_LEVELS)

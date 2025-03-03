@@ -3,8 +3,7 @@ using Project.service.impl;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Service katmanını container'a ekle
-builder.Services.AddControllers(); // Controller desteğini ekle
+builder.Services.AddControllers(); 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient();
@@ -14,7 +13,6 @@ builder.Services.AddScoped<ElliottWaveService, ElliottWaveServiceImpl>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -22,9 +20,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseAuthorization(); // Yetkilendirme middleware'ini ekle
+app.UseAuthorization(); 
 
-// Controller route'ları için
 app.MapControllers();
 
 app.Run();

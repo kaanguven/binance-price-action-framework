@@ -1,5 +1,3 @@
-// src/Project/model/ElliottWave.cs
-
 using System;
 using System.Collections.Generic;
 

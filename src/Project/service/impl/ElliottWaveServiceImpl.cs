@@ -1,5 +1,3 @@
-// src/Project/service/impl/ElliottWaveServiceImpl.cs
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,7 +40,6 @@ namespace Project.service.impl
             if (ohlcResponse.Candles == null || !ohlcResponse.Candles.Any())
                 return response;
             
-            // Zigzag noktalarını hesapla
             if (request.UseLength1)
                 CalculateZigZagAndWaves(ohlcResponse.Candles, response.ZigZagPoints, response.WavePatterns, request.Length1);
             
@@ -52,7 +49,6 @@ namespace Project.service.impl
             if (request.UseLength3)
                 CalculateZigZagAndWaves(ohlcResponse.Candles, response.ZigZagPoints, response.WavePatterns, request.Length3);
             
-            // Fibonacci seviyelerini hesapla
             CalculateFibonacciLevels(response.WavePatterns, request);
             
             return response;
@@ -63,7 +59,6 @@ namespace Project.service.impl
         {
             var zigZag = new ZigZag(500);
             
-            // ZigZag noktalarını hesapla
             for (int i = length; i < candles.Count; i++)
             {
                 bool isPivotHigh = IsPivotPoint(candles, i, length, true);
@@ -99,7 +94,6 @@ namespace Project.service.impl
                         }
                     }
                     
-                    // Elliott dalga formasyonlarını kontrol et
                     DetectElliottWavePatterns(zigZag, candles, wavePatterns, i);
                 }
                 
@@ -133,7 +127,6 @@ namespace Project.service.impl
                         }
                     }
                     
-                    // Elliott dalga formasyonlarını kontrol et
                     DetectElliottWavePatterns(zigZag, candles, wavePatterns, i);
                 }
             }
@@ -145,7 +138,6 @@ namespace Project.service.impl
             if (zigZag.Count < 6)
                 return;
                 
-            // Zigzag noktalarını al
             int _6x = zigZag.GetX(0), _6y = (int)zigZag.GetY(0);
             int _5x = zigZag.GetX(1), _5y = (int)zigZag.GetY(1);
             int _4x = zigZag.GetX(2), _4y = (int)zigZag.GetY(2);
@@ -153,8 +145,6 @@ namespace Project.service.impl
             int _2x = zigZag.GetX(4), _2y = (int)zigZag.GetY(4);
             int _1x = zigZag.GetX(5), _1y = (int)zigZag.GetY(5);
             
-            // İleri yönlü (motive) dalga tespiti
-            // Yükselen motive dalga tespiti için
             if (zigZag.GetDirection(0) == 1)
             {
                 decimal _W5 = zigZag.GetY(0) - zigZag.GetY(1);
@@ -170,7 +160,6 @@ namespace Project.service.impl
                               
                 if (isWave)
                 {
-                    // Yeni bir motive dalga deseni tespit edildi
                     var wavePattern = new WavePattern
                     {
                         Type = "Motive",
@@ -181,7 +170,6 @@ namespace Project.service.impl
                         Points = new List<WavePoint>()
                     };
                     
-                    // Dalga noktaları
                     for (int i = 0; i < 6; i++)
                     {
                         int idx = zigZag.GetX(i);
@@ -199,8 +187,6 @@ namespace Project.service.impl
                     wavePatterns.Add(wavePattern);
                 }
                 
-                // Olası ABC düzeltme dalgası tespiti
-                // Motive dalga sonrası gerçekleşir
                 if (wavePatterns.Any() && wavePatterns.Last().Type == "Motive" && 
                     wavePatterns.Last().Direction == "Bearish")
                 {
@@ -225,7 +211,6 @@ namespace Project.service.impl
                             Points = new List<WavePoint>()
                         };
                         
-                        // A-B-C dalga noktaları
                         correctiveWave.Points.Add(new WavePoint
                         {
                             Label = "A",
@@ -255,7 +240,6 @@ namespace Project.service.impl
                 }
             }
             
-            // Düşen motive dalga tespiti için
             if (zigZag.GetDirection(0) == -1)
             {
                 decimal _W5 = zigZag.GetY(1) - zigZag.GetY(0);
@@ -271,7 +255,6 @@ namespace Project.service.impl
                               
                 if (isWave)
                 {
-                    // Yeni bir motive dalga deseni tespit edildi
                     var wavePattern = new WavePattern
                     {
                         Type = "Motive",
@@ -282,7 +265,6 @@ namespace Project.service.impl
                         Points = new List<WavePoint>()
                     };
                     
-                    // Dalga noktaları
                     for (int i = 0; i < 6; i++)
                     {
                         int idx = zigZag.GetX(i);
@@ -300,8 +282,6 @@ namespace Project.service.impl
                     wavePatterns.Add(wavePattern);
                 }
                 
-                // Olası ABC düzeltme dalgası tespiti
-                // Motive dalga sonrası gerçekleşir
                 if (wavePatterns.Any() && wavePatterns.Last().Type == "Motive" && 
                     wavePatterns.Last().Direction == "Bullish")
                 {
@@ -326,7 +306,6 @@ namespace Project.service.impl
                             Points = new List<WavePoint>()
                         };
                         
-                        // A-B-C dalga noktaları
                         correctiveWave.Points.Add(new WavePoint
                         {
                             Label = "A",
@@ -369,7 +348,6 @@ namespace Project.service.impl
                     decimal diff = Math.Abs(end.Price - start.Price);
                     bool isBullish = pattern.Direction == "Bullish";
                     
-                    // Fibonacci seviyeleri
                     pattern.FibonacciLevels = new List<FibonacciLevel>();
                     
                     pattern.FibonacciLevels.Add(new FibonacciLevel
