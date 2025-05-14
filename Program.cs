@@ -21,6 +21,7 @@ builder.Services.AddHttpClient();
 builder.Services.AddScoped<CryptoService, CryptoServiceImpl>();
 builder.Services.AddScoped<ElliottWaveService, ElliottWaveServiceImpl>();
 builder.Services.AddScoped<SupportResistanceService, SupportResistanceServiceImpl>();
+builder.Services.AddScoped<IMarketStructureService, MarketStructureServiceImpl>();
 
 var app = builder.Build();
 
