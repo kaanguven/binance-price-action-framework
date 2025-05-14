@@ -89,8 +89,14 @@ namespace Project.service.impl
                 {
                     if (currentTrend == 1) // Trend changed to UP, a LOW was made
                     {
-                        int lastToUpSignalBar = i - 1 - BarsSince(toUpHistory, i - 1, true);
-                        var (lowVal, lowIndex) = FindLowestLow(candles, lastToUpSignalBar, i);
+                        // Pine: low_val = ta.lowest(nz(last_trend_up_since > 0 ? last_trend_up_since : 1, 1))
+                        // last_trend_up_since = ta.barssince(to_up[1])
+                        // nz(X > 0 ? X : 1, 1) where X = barssince means length = max(1, barssince)
+                        int numBarsSincePrevToUp = BarsSince(toUpHistory, i - 1, true); // This is ta.barssince(to_up[1]) at current bar i
+                        int lookbackLength = Math.Max(1, numBarsSincePrevToUp);
+                        int searchStartIndex = Math.Max(0, i - lookbackLength + 1); // Start index for ta.lowest(lookbackLength)
+
+                        var (lowVal, lowIndex) = FindLowestLow(candles, searchStartIndex, i);
                         if(lowIndex != -1)
                         {
                             var newLowPoint = new SwingPoint { Price = lowVal, Index = lowIndex, Date = candles[lowIndex].DateTime, Type = "Low" };
@@ -101,8 +107,13 @@ namespace Project.service.impl
                     }
                     else // Trend changed to DOWN, a HIGH was made
                     {
-                        int lastToDownSignalBar = i - 1 - BarsSince(toDownHistory, i - 1, true);
-                        var (highVal, highIndex) = FindHighestHigh(candles, lastToDownSignalBar, i);
+                        // Pine: high_val = ta.highest(nz(last_trend_down_since > 0 ? last_trend_down_since : 1, 1))
+                        // last_trend_down_since = ta.barssince(to_down[1])
+                        int numBarsSincePrevToDown = BarsSince(toDownHistory, i - 1, true);
+                        int lookbackLength = Math.Max(1, numBarsSincePrevToDown);
+                        int searchStartIndex = Math.Max(0, i - lookbackLength + 1); // Start index for ta.highest(lookbackLength)
+
+                        var (highVal, highIndex) = FindHighestHigh(candles, searchStartIndex, i);
                         if(highIndex != -1)
                         {
                             var newHighPoint = new SwingPoint { Price = highVal, Index = highIndex, Date = candles[highIndex].DateTime, Type = "High" };
